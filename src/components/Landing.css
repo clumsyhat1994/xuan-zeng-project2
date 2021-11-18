@@ -1,0 +1,36 @@
+body{
+    
+}
+.menu{
+    font-size: 50px;
+    padding: 2%;
+    display: block;
+   
+   
+    background-color: white;
+    color: black;
+}
+
+a{
+    text-decoration: none;
+}
+
+#menu{
+    position: relative;
+    left: 500px;
+    top: 200px;
+}
+
+p{
+    position: relative;
+    width: 45%;
+    text-align: justify;
+    font-size: 25px;
+    left: 50%;
+    transform: translate(-50%,10%);
+    line-height: 35px;
+}
+
+p::first-letter{
+    font-size: 200%;
+}

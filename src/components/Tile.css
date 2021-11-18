@@ -1,0 +1,44 @@
+.tile {
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    border: black 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tile.destroyer {
+    background-color:burlywood;
+}
+
+.tile.carrier {
+    background-color: yellow;
+}
+
+.tile.battleship {
+    background-color:pink;
+}
+
+.tile.submarine {
+    background-color: white;
+}
+
+.tile.cruiser {
+    background-color:turquoise;
+}
+
+.tile.hidden{
+    background-color: #b0c4de;
+}
+
+.tile.hit{
+    background-color: crimson;
+}
+.tile.missed{
+    background-color: black;
+}
+
+.tile:not(.selected):hover{
+    background-color: #2C3E50;
+}

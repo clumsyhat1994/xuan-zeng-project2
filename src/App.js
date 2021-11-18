@@ -1,24 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import { Board } from './components/Board';
+import RestartBtn from './components/RestartBtn';
+import StartBtn from './components/StartBtn';
+import { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux';
+import { NUM_OF_SHIP_TILES } from './Constants';
+import Result from './components/Result';
+import BoardContainer from './components/BoardContainer';
 
+import React, { useContext } from 'react';
+import { Link, NavLink, useParams } from "react-router-dom";
+
+export const gameModeContext = React.createContext();
 function App() {
+
+  const gameMode = useParams().mode;
+  //console.log(gameMode);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <gameModeContext.Provider value={gameMode}>
+      <div className="App">
+        <RestartBtn />
+        <Result />
+        <BoardContainer mode={gameMode} />
+      </div>
+    </gameModeContext.Provider>
   );
 }
 
