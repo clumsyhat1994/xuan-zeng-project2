@@ -39,6 +39,14 @@
     background-color: black;
 }
 
-.tile:not(.selected):hover{
+.tile:not(.selected):not(.player):hover{
     background-color: #2C3E50;
+    cursor: pointer;
+}
+
+@media (max-width:410px) {
+    .tile{
+        width: 20px;
+        height: 20px;
+    }
 }

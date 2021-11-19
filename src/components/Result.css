@@ -4,3 +4,9 @@ div h1{
 #result{
     height: 60px;
 }
+
+@media (max-width:370px) {
+    div h1{
+        font-size: 28px;
+    }
+}

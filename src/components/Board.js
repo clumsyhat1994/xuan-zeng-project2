@@ -28,13 +28,16 @@ export function Board(props) {
     }, []);
 
     const tileList = tiles.map(tile => {
-        let className = tile.className
+        let className = tile.className;
+        className += ' '+ props.user;
         if(props.user === 'computer'){
             className += ' hidden';
             //console.log(className);
         }
         return (
-            <Tile id={tile.id} key={tile.id} isOccupied={tile.isOccupied} className={className} state={tile.state} user={props.user}/>
+            <Tile id={tile.id} key={tile.id} isOccupied={tile.isOccupied} 
+            className={className} state={tile.state} user={props.user}/>
+            //className={className} state={tile.state} user={props.user}/>
         );
     });
    //console.log(tileList);
