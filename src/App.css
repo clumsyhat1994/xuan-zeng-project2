@@ -43,4 +43,24 @@
   }
 }
 
+@media (max-width:860px) {
+  #boards{
+    position: absolute;
+    width: 410px;
+    flex-wrap: wrap;
+    left: 20%;
+  }
+}
 
+
+@media (max-width:650px) {
+  #boards{
+    left: 10%;
+  }
+}
+
+@media (max-width:410px) {
+  #boards{
+    width: 210px;
+  }
+}

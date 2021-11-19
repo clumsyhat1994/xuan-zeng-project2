@@ -7,3 +7,12 @@
     grid-template-rows: repeat(10,40px);
     margin-top: 10px;
 }
+
+@media (max-width:410px) {
+    #grid{
+        width: 200px;
+        height: 200px;
+        grid-template-columns: repeat(10,20px);
+        grid-template-rows: repeat(10,20px);
+    }
+}

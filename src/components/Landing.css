@@ -1,12 +1,7 @@
-body{
-    
-}
 .menu{
     font-size: 50px;
     padding: 2%;
     display: block;
-   
-   
     background-color: white;
     color: black;
 }
@@ -18,7 +13,8 @@ a{
 #menu{
     position: relative;
     left: 500px;
-    top: 200px;
+    left: 33%;
+    top: 230px;
 }
 
 p{
@@ -33,4 +29,15 @@ p{
 
 p::first-letter{
     font-size: 200%;
+}
+
+@media (max-width: 550px) {
+    .menu{
+        font-size: 30px;
+    }
+    p{
+        top: -50px;
+        width: 60%;
+    }
+    
 }
