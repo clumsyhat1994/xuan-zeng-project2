@@ -4,9 +4,7 @@ import { useDispatch } from 'react-redux';
 import './Board.css';
 import { Tile } from "./Tile";
 import {initiatePlayerBoard,initiateFreeBoard,initiateComputerBoard } from "../actions/actions";
-
-
-
+import { NUM_OF_SHIP_TILES } from "../Constants";
 export function Board(props) {
     const tiles = useSelector(state => {
         if (props.user === 'player') {
@@ -15,10 +13,23 @@ export function Board(props) {
             return state.boardTiles[1];
         }
     });
+    
     const dispatch = useDispatch();
+    
+    function isWon(board) {
+        let hitCount = 0;
+        board.forEach(tile => {
+            if (tile.className.includes('hit')) {
+                hitCount++;
+            }
+        });
+        return (hitCount === NUM_OF_SHIP_TILES);
+    }
+
+    const won = isWon(tiles);
+
 
     useEffect(() => {
-        console.log(props.mode);
         if(props.mode==='freeplay'){
             console.log('free!!!!');
             dispatch(initiateFreeBoard());
@@ -35,9 +46,13 @@ export function Board(props) {
     const tileList = tiles.map(tile => {
         let className = tile.className;
         className += ' '+ props.user;
+        /*
         if(props.user !== 'player'){
             className += ' hidden';
-            console.log(className);
+        }
+        */
+        if(won){
+            className += ' terminated';
         }
         return (
             <Tile id={tile.id} key={tile.id} isOccupied={tile.isOccupied} 

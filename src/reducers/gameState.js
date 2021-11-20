@@ -8,8 +8,6 @@ export default function gameStateReduce(state = 'player', action) {
             }
         case 'STARTGAME':
             return 'player';
-        case 'OVER':
-            return 'over';
         default:
             return state;
     }

@@ -11,21 +11,15 @@ export function Tile(props) {
     const gameMode = useContext(gameModeContext);
     const dispatch = useDispatch();
     function handleClick() {
-        console.log('click');
-        if (gameState === null || gameState === 'computer' || props.user === 'player' || props.state !== undefined) {
-            console.log(gameState);
-            console.log(props.user);
-            console.log(props.state);
-            console.log('denied')
+        if (gameState === null || gameState === 'computer' || props.user === 'player' || props.className.includes('selected')
+            || props.className.includes('terminated')) {
             return;
         }
 
         if (props.isOccupied) {
             dispatch(addTileClass(props.id, 'hit', props.user));
-            console.log('hit')
         } else {
             dispatch(addTileClass(props.id, 'missed', props.user));
-            console.log('miss');
         }
         dispatch(addTileClass(props.id, 'selected', props.user));
 
