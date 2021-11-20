@@ -27,9 +27,9 @@ export default function Landing(props) {
     return (
         <div id='menu'>
 
-            <Link to={'/game/normal'}><button class='menu' type='button'>Normal Mode</button></Link>
-            <Link to={'/game/freeplay'}><button class='menu' type='button'>Free Play Mode</button></Link>
-            <Link to={'/displayRule'}><button class='menu' type='button'>Rules</button></Link>
+            <Link to={'/game/normal'}><button className='menu' type='button'>Normal Mode</button></Link>
+            <Link to={'/game/freeplay'}><button className='menu' type='button'>Free Play Mode</button></Link>
+            <Link to={'/displayRule'}><button className='menu' type='button'>Rules</button></Link>
         </div >
     );
 

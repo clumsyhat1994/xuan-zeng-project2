@@ -11,6 +11,30 @@ export function initiateBoard() {
     };
 };
 
+export function initiateNormalBoard() {
+    return {
+        type: 'INITNORMAL'
+    };
+};
+
+export function initiateComputerBoard() {
+    return {
+        type: 'INITCPU'
+    };
+};
+
+export function initiatePlayerBoard() {
+    return {
+        type: 'INITPLAYER'
+    };
+};
+
+export function initiateFreeBoard() {
+    return {
+        type: 'INITFREE'
+    };
+};
+
 export function addTileClass(id, className, user) {
     return {
         type: 'ADDCLASS',
@@ -44,5 +68,12 @@ export function nextUser() {
 export function gameOver() {
     return {
         type: 'OVER'
+    }
+}
+
+export function restart(mode) {
+    return {
+        type: 'RESTART',
+        mode: mode
     }
 }
