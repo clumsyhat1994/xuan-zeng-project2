@@ -16,24 +16,31 @@ export function Tile(props) {
     //console.log('render tile');
     //console.log('game state ' + gameState);
     function handleClick() {
-        //console.log(gameMode);
-        // console.log('click');
-        //console.log('game state ' + gameState);
-        //console.log('id ' + props.id + 'occupied?' + props.isOccupied);
+        console.log('click');
         if (gameState === null || gameState === 'computer' || props.user === 'player' || props.state !== undefined) {
+            console.log(gameState);
+            console.log(props.user);
+            console.log(props.state);
+            console.log('denied')
             return;
         }
 
         if (props.isOccupied) {
-            dispatch(updateTileState(props.id, 'hit', props.user));
+            //dispatch(updateTileState(props.id, 'hit', props.user));
+            dispatch(addTileClass(props.id, 'hit', props.user));
+            console.log('hit')
         } else {
-            dispatch(updateTileState(props.id, 'missed', props.user));
+            //dispatch(updateTileState(props.id, 'missed', props.user));
+            dispatch(addTileClass(props.id, 'missed', props.user));
+            console.log('miss');
         }
+        //to disable hover effect
         dispatch(addTileClass(props.id, 'selected', props.user));
 
         if (gameMode === 'normal') {
             dispatch(nextUser());
-            setTimeout(computerGo, 0);
+            computerGo();
+            //setTimeout(computerGo, 0);
             //console.log('Hooooooo')
         }
     }
@@ -41,7 +48,7 @@ export function Tile(props) {
     function computerGo() {
         //console.log('game state ' + gameState);
         let randomHit = Math.floor(Math.random() * 100);
-        while (playerBoard[randomHit].state !== undefined) {
+        while (playerBoard[randomHit].className.includes('selected')) {
             randomHit = Math.floor(Math.random() * 100);
         }
         clickHelper(randomHit, 'player');
@@ -51,10 +58,12 @@ export function Tile(props) {
     function clickHelper(tileID, user) {
         //console.log('game state ' + gameState);
         if (playerBoard[tileID].isOccupied) {
-            dispatch(updateTileState(tileID, 'hit', user));
+            //dispatch(updateTileState(tileID, 'hit', user));
+            dispatch(addTileClass(tileID, 'hit', user));
         } else {
-            dispatch(updateTileState(tileID, 'missed', user));
+            dispatch(addTileClass(tileID, 'missed', user));
         }
+        dispatch(addTileClass(tileID, 'selected', user));
         dispatch(nextUser());
         //console.log('end click');
     }
@@ -62,8 +71,9 @@ export function Tile(props) {
 
     //console.log(computerBoard);
     return (
-        <div className={`${props.className} ${props.state}`} onClick={handleClick}>
-            <Icon state={props.state} />
+        //<div className={`${props.className} ${props.state}`} onClick={handleClick}>
+        <div className={props.className} onClick={handleClick}>
+            <Icon state={props.className} />
         </div>
     );
 }

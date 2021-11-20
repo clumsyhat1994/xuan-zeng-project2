@@ -1,5 +1,18 @@
 import './Icon.css'
 export default function Icon(props) {
+    if (props.state.includes('missed')) {
+        return (
+            <div className='missed'>X</div>
+        );
+    } else if (props.state.includes('hit')) {
+        return (
+            < div className='hit' >✔</div >
+        );
+    } else {
+        //console.log('null');
+        return null;
+    }
+    /* 
     switch (props.state) {
         case 'missed':
             return (
@@ -12,4 +25,5 @@ export default function Icon(props) {
         default:
             return null;
     }
+    */
 }

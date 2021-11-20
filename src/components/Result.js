@@ -14,12 +14,11 @@ export default function Result(props) {
     function isWon(board) {
         let hitCount = 0;
         board.forEach(tile => {
-            if (tile.state === 'hit') {
+            //if (tile.state === 'hit') {
+            if (tile.className.includes('hit')) {
                 hitCount++;
-                //console.log('here????????????')
             }
         });
-        //console.log(hitCount);
         return (hitCount === NUM_OF_SHIP_TILES);
     }
     if (isWon(computerBoard)) {

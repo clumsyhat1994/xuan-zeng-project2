@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import './Board.css';
 import { Tile } from "./Tile";
-import { updateTileState, nextUser, initiateBoard,gameOver } from "../actions/actions";
+import {initiatePlayerBoard,initiateFreeBoard,initiateNormalBoard,initiateComputerBoard } from "../actions/actions";
 import { NUM_OF_SHIP_TILES } from "../Constants";
 
 
@@ -24,16 +24,31 @@ export function Board(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(initiateBoard());
+        //localStorage.clear();
+        console.log(props.mode);
+        if(props.mode==='freeplay'){
+            //localStorage.clear();
+            console.log('free!!!!');
+            dispatch(initiateFreeBoard());
+        }else{
+            if(props.user==='player'){
+                dispatch(initiatePlayerBoard());
+            }
+            else if(props.user==='computer'){
+                dispatch(initiateComputerBoard());
+            }
+        }
     }, []);
 
     const tileList = tiles.map(tile => {
         let className = tile.className;
         className += ' '+ props.user;
-        if(props.user === 'computer'){
+        
+        if(props.user !== 'player'){
             className += ' hidden';
-            //console.log(className);
+            console.log(className);
         }
+        
         return (
             <Tile id={tile.id} key={tile.id} isOccupied={tile.isOccupied} 
             className={className} state={tile.state} user={props.user}/>
