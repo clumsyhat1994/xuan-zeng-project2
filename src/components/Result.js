@@ -4,17 +4,13 @@ import { useSelector } from 'react-redux';
 import { NUM_OF_SHIP_TILES } from '../Constants';
 
 
-export default function Result(props) {
-    const gameState = useSelector(state => state.gameState);
+export default function Result() {
     const playerBoard = useSelector(state => state.boardTiles[0]);
     const computerBoard = useSelector(state => state.boardTiles[1]);
-    //console.log(gameState);
-    //isWon(playerBoard);
 
     function isWon(board) {
         let hitCount = 0;
         board.forEach(tile => {
-            //if (tile.state === 'hit') {
             if (tile.className.includes('hit')) {
                 hitCount++;
             }
@@ -22,7 +18,6 @@ export default function Result(props) {
         return (hitCount === NUM_OF_SHIP_TILES);
     }
     if (isWon(computerBoard)) {
-        //dispatch(gameOver());
         return (
             <div id='result'>
                 <h1>Game over! You won!</h1>
@@ -31,7 +26,6 @@ export default function Result(props) {
     }
 
     if (isWon(playerBoard)) {
-        //dispatch(gameOver());
         return (
             <div id='result'>
                 <h1>Game over! Computer won!</h1>
@@ -41,5 +35,3 @@ export default function Result(props) {
     return (<div id='result'><h1></h1></div>);
 
 }
-
-//export default Result;

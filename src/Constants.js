@@ -24,7 +24,6 @@ export const SHIPS = [
 export const NUM_OF_SHIP_TILES = (() => {
     let number = 0;
     SHIPS.forEach(ship => { number += ship.length; });
-    //console.log('!!!!!!!!!!!!' + number)
     return number;
 })();
 
@@ -34,5 +33,3 @@ for (let i = 0; i < 100; i++) {
 }
 
 export const PLAIN_BOARD = tiles;
-
-//export const CONSTANTS = { SHIPS, PLAIN_BOARD };

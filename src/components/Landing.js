@@ -1,10 +1,8 @@
 import React from "react";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import './Landing.css'
-export default function Landing(props) {
+export default function Landing() {
     const display = useParams().mode;
-    //const param = useParams();
-    //console.log(param);
     if (display === 'displayRule') {
         return (
             <>
