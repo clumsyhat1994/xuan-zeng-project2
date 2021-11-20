@@ -1,5 +1,4 @@
 import { SHIPS, PLAIN_BOARD } from "../Constants";
-import { gameOver } from "../actions/actions";
 import { NUM_OF_SHIP_TILES } from "../Constants";
 export function boardTilesReducer(state = [PLAIN_BOARD, PLAIN_BOARD], action) {
     let newTiles = [];
@@ -118,7 +117,6 @@ function initHelper(board) {
         tiles = generateShip(ship, tiles);
     });
     localStorage.setItem(board, JSON.stringify(tiles));
-    //console.log(localStorage.getItem('computerBoard'));
     return tiles;
 }
 
@@ -130,44 +128,30 @@ function generateRandomeStartAndRandomDirection() {
 }
 
 function generateShip(ship, updatedTiles) {
-    //console.log('in the fuction!!!!!!!!' + updatedTiles + ship);
-    //console.log(updatedTiles);
     let [randomShipDirection, randomStart] = generateRandomeStartAndRandomDirection();
     let shipTiles = [];
-    //console.log('the random number is' + randomShipDirection);
     while (((randomShipDirection === 0 && (randomStart % 10 + ship.length - 1) > 9)) || (randomShipDirection === 1 && (randomStart + 10 * ship.length) > 99)) {
         [randomShipDirection, randomStart] = generateRandomeStartAndRandomDirection();
     }
-    //console.log('Got the random numbers!!' + randomShipDirection + ',' + randomStart);
 
     if (randomShipDirection === 0) {
         shipTiles = updatedTiles.slice(randomStart, randomStart + ship.length);
-        //console.log(shipTiles + '??????????????????????????????');
     } else {
         for (let i = 0; i < ship.length; i++) {
             shipTiles.push(updatedTiles[randomStart + 10 * i]);
         }
     }
-    //console.log(shipTiles[0] + '!!!!!!!!!!!!!!!!!!!!!!!');
-    //console.log('random start ' + randomStart);
-
     if (shipTiles.some(tile => tile.isOccupied === true)) {
-        //console.log('loop!!!!!!!!!!!!!!');
         updatedTiles = generateShip(ship, updatedTiles);
     } else {
         updatedTiles = updatedTiles.map(tile => {
-            //console.log('tile id' + tile.id);\
             shipTiles.forEach(shipTile => {
-                //console.log('shipid ' + shipTile.id + ' tileid ' + tile.id);
                 if (shipTile.id === tile.id) {
                     tile = { id: tile.id, key: tile.id, isOccupied: true, className: ship.name + ' tile' };
                 }
-                //console.log('unchanged!!!!!' + tile.className);
             });
             return tile;
         });
-        //console.log(updatedTiles);
-        //setTiles(updatedTiles);     
     }
     return updatedTiles;
 }
@@ -181,7 +165,6 @@ function isGameOverHelper(tiles) {
     tiles.forEach(tile => {
         if (tile.state === 'hit') {
             hitCount++;
-            //console.log('here????????????')
         }
     });
     if (hitCount === NUM_OF_SHIP_TILES) {

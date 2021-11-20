@@ -9,7 +9,6 @@ export default function Icon(props) {
             < div className='hit' >✔</div >
         );
     } else {
-        //console.log('null');
         return null;
     }
     /* 
