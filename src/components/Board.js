@@ -46,11 +46,11 @@ export function Board(props) {
     const tileList = tiles.map(tile => {
         let className = tile.className;
         className += ' '+ props.user;
-        /*
+        
         if(props.user !== 'player'){
             className += ' hidden';
         }
-        */
+        
         if(won){
             className += ' terminated';
         }
