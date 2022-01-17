@@ -1,114 +1,103 @@
 import { SHIPS, PLAIN_BOARD } from "../Constants";
 import { NUM_OF_SHIP_TILES } from "../Constants";
-export function boardTilesReducer(state = [PLAIN_BOARD, PLAIN_BOARD], action) {
+export function boardTilesReducer(state = { boards: [PLAIN_BOARD, PLAIN_BOARD], winner: null }, action) {
     let newTiles = [];
+    let winner = null;
     switch (action.type) {
-
         case 'INIT':
-            let updatedTiles1 = [...PLAIN_BOARD];
-            let updatedTiles2 = [...PLAIN_BOARD];
-            SHIPS.forEach((ship) => {
-                updatedTiles1 = generateShip(ship, updatedTiles1);
-                updatedTiles2 = generateShip(ship, updatedTiles2);
-            });
-            return [updatedTiles1, updatedTiles2];
+            let player = [];
+            let computer = [];
 
-        case 'INITCPU':
-            if (localStorage.getItem('computerBoard') !== null) {
-
-                return [state[0], JSON.parse(localStorage.getItem('computerBoard'))];
+            if (localStorage.getItem('playerBoard')) {
+                player = JSON.parse(localStorage.getItem('playerBoard'))
+                if (isGameOver(player)) winner = 'computer';
+            } else {
+                player = initHelper('playerBoard');
             }
-            return [state[0], initHelper('computerBoard')];
 
-        case 'INITPLAYER':
-            if (localStorage.getItem('playerBoard') !== null) {
-                return [JSON.parse(localStorage.getItem('playerBoard')), state[1]];
+            if (localStorage.getItem('computerBoard')) {
+                computer = JSON.parse(localStorage.getItem('computerBoard'));
+                if (isGameOver(computer)) winner = 'player';
+            } else {
+                computer = initHelper('computerBoard');
             }
-            return [initHelper('playerBoard'), state[1]];
+            return {
+                boards: [player, computer],
+                winner: winner
+            };
 
         case 'INITFREE':
             if (localStorage.getItem('freeBoard') !== null) {
-                return [[], JSON.parse(localStorage.getItem('freeBoard'))];
+                newTiles = JSON.parse(localStorage.getItem('freeBoard'));
+                if (isGameOver(newTiles)) winner = 'player';
+                return {
+                    boards: [[], newTiles],
+                    winner: winner
+                };
             }
-            return [[], initHelper('freeBoard')];
+            return {
+                boards: [[], initHelper('freeBoard')],
+                winner: null
+            };
 
         case 'RESTART':
             if (action.mode === 'normal') {
-                return [initHelper('playerBoard'), initHelper('computerBoard')];
+                return {
+                    boards: [initHelper('playerBoard'), initHelper('computerBoard')],
+                    winner: null
+                };
             } else {
-                return [[], initHelper('freeBoard')];
+                return {
+                    boards: [[], initHelper('freeBoard')],
+                    winner: null
+                };
             }
 
-        case 'REPLACE':
-            return action.payload;
-
-        case 'ADDCLASS':
-            if (isGameOver(state)) {
-                console.log('game over');
-                return [...state];
+        case 'CLICK':
+            newTiles = [...state.boards[1]];
+            click(newTiles, action.id);
+            if (isGameOver(newTiles)) {
+                winner = 'player'
             }
-            if (action.user === 'player') {
-                newTiles = [...state[0]];
-            }
-            else {
-                newTiles = [...state[1]];
-            }
-            newTiles = newTiles.map((tile) => {
-                if (tile.id === action.id) {
-                    return { ...tile, className: `${tile.className} ${action.payload}` }
-                }
-                return tile;
-            });
-            if (action.user === 'player') {
-                localStorage.setItem('playerBoard', JSON.stringify(newTiles));
-                return [newTiles, state[1]];
-            }
-            else if (action.user === 'computer') {
+            if (action.user === 'computer') {
                 localStorage.setItem('computerBoard', JSON.stringify(newTiles));
-                return [state[0], newTiles];
+                return { boards: [state.boards[0], newTiles], winner: winner };
             }
             else {
                 localStorage.setItem('freeBoard', JSON.stringify(newTiles));
-                return [[], newTiles];
+                return { boards: [[], newTiles], winner: winner };
             }
 
-        /*
-        case 'UPDATETILESTATE':
-            if (isGameOver(state)) {
-                return [...state];
+        case 'COMPGO':
+            if (state.winner) {
+                return state;
             }
+            let randomHit = Math.floor(Math.random() * 100);
+            while (state.boards[0][randomHit].className.includes('selected')) {
+                randomHit = Math.floor(Math.random() * 100);
+            }
+            newTiles = [...state.boards[0]];
+            click(newTiles, randomHit);
+            if (isGameOver(newTiles)) winner = 'computer';
+            localStorage.setItem('playerBoard', JSON.stringify(newTiles));
+            return { boards: [newTiles, state.boards[1]], winner: winner };
 
-            if (action.user === 'player') {
-                newTiles = [...state[0]];
-            }
-            else {
-                newTiles = [...state[1]];
-            }
-            newTiles = newTiles.map((tile) => {
-                if (tile.id === action.id) {
-                    return { ...tile, state: action.payload }
-                }
-                return tile;
-            });
-            if (action.user === 'player') {
-                localStorage.setItem('playerBoard', JSON.stringify(newTiles));
-                return [newTiles, state[1]];
-            }
-            else if (action.user === 'computer') {
-                localStorage.setItem('computerBoard', JSON.stringify(newTiles));
-                return [state[0], newTiles];
-            }
-            else {
-                localStorage.setItem('freeBoard', JSON.stringify(newTiles));
-                return [[], newTiles];
-            }
-            */
         default:
             return state;
     }
 }
 
 
+function click(tiles, id) {
+    let newClass = '';
+    if (tiles[id].isOccupied) {
+        newClass += ' hit';
+    } else {
+        newClass += ' missed';
+    }
+    newClass += ' selected';
+    tiles[id] = { ...tiles[id], className: tiles[id].className + newClass }
+}
 
 function initHelper(board) {
 
@@ -156,14 +145,10 @@ function generateShip(ship, updatedTiles) {
     return updatedTiles;
 }
 
-function isGameOver(state) {
-    return isGameOverHelper(state[0]) || isGameOverHelper(state[1])
-}
-
-function isGameOverHelper(tiles) {
+function isGameOver(tiles) {
     let hitCount = 0;
     tiles.forEach(tile => {
-        if (tile.state === 'hit') {
+        if (tile.className.includes('hit')) {
             hitCount++;
         }
     });
@@ -172,3 +157,33 @@ function isGameOverHelper(tiles) {
     }
     return false;
 }
+
+/**
+        case 'INITCPU':
+            if (localStorage.getItem('computerBoard')) {
+                newTiles = JSON.parse(localStorage.getItem('computerBoard'));
+                if (isGameOver(newTiles)) winner = 'player';
+                return {
+                    boards: [state.boards[0], newTiles],
+                    winner: winner
+                };
+            }
+            return {
+                boards: [state.boards[0], initHelper('computerBoard')],
+                winner: null
+            };
+ 
+        case 'INITPLAYER':
+            if (localStorage.getItem('playerBoard') !== null) {
+                newTiles = JSON.parse(localStorage.getItem('playerBoard'))
+                if (isGameOver(newTiles)) winner = 'computer';
+                return {
+                    boards: [newTiles, state.boards[1]],
+                    winner: winner
+                };
+            }
+            return {
+                boards: [initHelper('playerBoard'), state.boards[1]],
+                winner: null
+            };
+*/

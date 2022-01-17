@@ -2,7 +2,7 @@
     box-sizing: border-box;
     width: 40px;
     height: 40px;
-    border: black 1px solid;
+    border: #2C3E50 1px solid;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -24,8 +24,8 @@ code {
   width: fit-content;
   position: absolute;
   left: 50%;
+  top: 10px;
   transform: translateX(-50%);
-  
 }
 
 button{

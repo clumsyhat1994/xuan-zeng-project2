@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Board } from "./Board";
+import { useDispatch } from 'react-redux';
+import { initiateFreeBoard, initiateNormal } from "../actions/actions";
 export default function BoardContainer(props) {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (props.mode === 'freeplay') {
+            dispatch(initiateFreeBoard());
+        } else {
+            dispatch(initiateNormal());
+        }
+    }, []);
+
     if (props.mode === 'normal') {
         return (
             <div id='boards'>

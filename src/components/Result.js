@@ -1,24 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import './Result.css'
-import { useSelector, useDispatch } from 'react-redux';
-import { NUM_OF_SHIP_TILES } from '../Constants';
-import { gameOver } from "../actions/actions";
+import { useSelector } from 'react-redux';
 
 
 export default function Result() {
-    const playerBoard = useSelector(state => state.boardTiles[0]);
-    const computerBoard = useSelector(state => state.boardTiles[1]);
-    function isWon(board) {
-        let hitCount = 0;
-        board.forEach(tile => {
-            if (tile.className.includes('hit')) {
-                hitCount++;
-            }
-        });
-        return (hitCount === NUM_OF_SHIP_TILES);
-    }
-
-    if (isWon(computerBoard)) {
+    const winner = useSelector(state => state.boardTiles.winner);
+    if (winner === 'player') {
         return (
             <div id='result'>
                 <h1>Game over! You won!</h1>
@@ -26,7 +13,7 @@ export default function Result() {
         );
     }
 
-    if (isWon(playerBoard)) {
+    if (winner === 'computer') {
         return (
             <div id='result'>
                 <h1>Game over! Computer won!</h1>
